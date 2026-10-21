@@ -1,0 +1,9 @@
+"use client";
+import { useState } from "react";
+import { Check, LoaderCircle } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+export function ProfileEditor({userId,initialName,initialUsername,initialBio}:{userId:string;initialName:string;initialUsername:string;initialBio:string}){
+ const [name,setName]=useState(initialName);const [username,setUsername]=useState(initialUsername);const [bio,setBio]=useState(initialBio);const [busy,setBusy]=useState(false);const [notice,setNotice]=useState("");
+ async function save(e:React.FormEvent<HTMLFormElement>){e.preventDefault();setBusy(true);setNotice("");const supabase=createClient();const {error}=await supabase.from("profiles").upsert({id:userId,display_name:name.trim(),username:username.trim().toLowerCase()||null,bio:bio.trim(),updated_at:new Date().toISOString()});setNotice(error?error.message:"Perfil guardado.");setBusy(false);}
+ return <form className="profile-form" onSubmit={save}><label className="label">Nombre visible<input className="field" value={name} onChange={e=>setName(e.target.value)} maxLength={60} required/></label><label className="label">Nombre de usuario<input className="field" value={username} onChange={e=>setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g,""))} placeholder="tu_usuario" maxLength={24}/><span className="small">3–24 caracteres: minúsculas, números y guion bajo.</span></label><label className="label">Descripción<textarea className="field" value={bio} onChange={e=>setBio(e.target.value)} rows={3} maxLength={160} placeholder="¿Qué te mueve?"/></label><div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}><button className="btn btn-primary" disabled={busy}>{busy?<LoaderCircle size={16}/>:<Check size={16}/>} Guardar perfil</button>{notice&&<span className="small muted" role="status">{notice}</span>}</div></form>;
+}

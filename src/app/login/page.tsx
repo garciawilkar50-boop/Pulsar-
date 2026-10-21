@@ -1,0 +1,6 @@
+import Link from "next/link";
+import { AudioLines } from "lucide-react";
+import { LoginButton } from "@/components/auth/LoginButton";
+export default function LoginPage(){
+ return <main className="auth-wrap"><section className="auth-card"><Link href="/" className="brand"><span className="brand-mark">⌁</span>Pulsar</Link><p className="eyebrow">Tu siguiente conexión</p><h1 style={{fontSize:34}}>Encuentra tu frecuencia.</h1><p className="muted" style={{lineHeight:1.7,marginBottom:26}}>Inicia sesión para emitir pulsos y resonar con ideas que importan.</p><div className="stack"><LoginButton provider="google" label="Continuar con Google"/><LoginButton provider="github" label="Continuar con GitHub"/></div><p className="muted small" style={{lineHeight:1.6,marginTop:20}}>Configura los proveedores en Supabase Auth para habilitar el acceso.</p><Link href="/" className="muted-link small" style={{display:"inline-flex",alignItems:"center",gap:7,marginTop:18}}><AudioLines size={15}/> Volver al inicio</Link></section></main>;
+}
